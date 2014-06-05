@@ -6,8 +6,7 @@ Just a very simple blog in AngularJS, Node.js, MongoDB
 Prerequisites: install npm (```sudo apt-get install npm```)
 
 Prepare:
-```npm install
-./node_modules/bower/bin/bower install```
+```npm install``` and ```./node_modules/bower/bin/bower install```
 
 Test server:
 ```./node_modules/mocha/bin/mocha test/server```
