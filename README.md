@@ -1,7 +1,7 @@
 my-blog
 =======
 
-Just a very simple blog in AngularJS, Node.js, MongoDB
+Just a very simple blog in AngularJS, Node.js and MongoDB. Demonstrates use of Mocha for server testing and Karma for AngularJS testing.
 
 Prerequisites: install npm (```sudo apt-get install npm```)
 
