@@ -23,6 +23,8 @@
         "mocha": "latest",
         "superagent": "latest",
         "expect.js": "latest",
-        "supertest": "latest"
+        "supertest": "latest",
+        "karma-firefox-launcher": "latest",
+        "karma-chrome-launcher": "latest"
     }
 }
