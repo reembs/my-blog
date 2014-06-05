@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myBlogApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="">
+            <div class="jumbotron">
+                <h1>My Blog</h1>
+                <p>A blog about {{'everything' + '!'}}</p>
+            </div>
+        </div>
+
+        <div ng-view="">
+
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="/javascripts/app.js"></script>
+    <script src="/javascripts/services/blog-service.js"></script>
+    <script src="/javascripts/controllers/main.js"></script>
+    <script src="/javascripts/controllers/addPost.js"></script>
+    <script src="/javascripts/controllers/showPost.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.container {
+    margin-top: 5px;
+    max-width: 900px;
+}
+
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.post {
+    margin-bottom: 10px;
+}
+
+.pheader {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.pmeta {
+    padding-left: 3px;
+    color: dimgray;
+    font-size: 1em;
+}
+
+.addPost {
+    margin-bottom: 15px;
+}
+
+.textInput {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.contentInput {
+    height: 200px;
+}

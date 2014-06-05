@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+var appCtor = require('../app').app;
+var start = require('../app').start;
+
+var BlogProvider = require('../data/blogProvider').BlogProvider;
+var db = new BlogProvider('localhost', 27017, 'my-blog', function() {
+    var app = appCtor(db);
+
+    app.set('port', process.env.PORT || 3000);
+
+    start(app, function(){});
+});

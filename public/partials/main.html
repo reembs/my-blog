@@ -1,0 +1,21 @@
+<a class="addPost btn btn-primary btn-sm" role="button" href="/add">Add post</a>
+
+<div class="post" ng-repeat="post in posts">
+    <span class="pheader" ng-click="openPost(post._id)">{{post.title}}</span>
+    <span class="pmeta"> by {{post.author}} at {{post.created_at}}</span>
+</div>
+
+<ul class="pager">
+    <li class="previous disabled" ng-if="!hasPreviousPage">
+        <a href>&larr; Newer</a>
+    </li>
+    <li class="previous" ng-if="hasPreviousPage">
+        <a href ng-click="previousPage()">&larr; Newer</a>
+    </li>
+    <li class="next disabled" ng-if="!hasNextPage">
+        <a href>Older &rarr;</a>
+    </li>
+    <li class="next" ng-if="hasNextPage">
+        <a href="#" ng-click="nextPage()">Older &rarr;</a>
+    </li>
+</ul>
