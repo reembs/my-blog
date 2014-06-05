@@ -15,7 +15,8 @@
         "debug": "~0.7.4",
         "jade": "~1.3.0",
         "bower": "latest",
-        "mongodb": "latest"
+        "mongodb": "latest",
+        "validator": "latest"
     },
     "devDependencies": {
         "karma": "latest",

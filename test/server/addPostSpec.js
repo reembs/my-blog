@@ -31,4 +31,14 @@ describe("Post adding API", function() {
                 });
             });
     });
+
+    it("Calling add API with malformed email should return error", function(done) {
+        request(server.app)
+            .post('/api/post')
+            .send({author: "someemail-com", title: "title", content: "content"})
+            .end(function(e, res) {
+                expect(res.status).to.eql(500);
+                done();
+            });
+    });
 });

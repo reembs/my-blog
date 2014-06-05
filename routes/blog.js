@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var validator = require('validator');
 
 var DB;
 
@@ -23,11 +24,18 @@ router.get('/show/:id', function(req, res) {
 });
 
 router.post('/post', function(req, res) {
-    DB.addPost({
+    var post = {
         author: req.body.author,
         title: req.body.title,
         content: req.body.content
-    }, function (e, result) {
+    };
+
+    if (!validator.isEmail(post.author)) {
+        res.send(500);
+        return;
+    }
+
+    DB.addPost(post, function (e, result) {
         if (e) throw e;
         res.send(201);
     });
