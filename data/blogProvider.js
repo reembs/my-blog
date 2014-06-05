@@ -3,6 +3,12 @@ var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
 var ObjectID = require('mongodb').ObjectID;
 
+var POSTS_PER_PAGE = 10;
+
+/**
+ * Constructor for the blog data provider
+ * @constructor
+ */
 BlogProvider = function (host, port, db, cb) {
     this.db = new Db(db, new Server(host, port, {auto_reconnect: true}, {}));
     this.db.open(cb);
@@ -34,20 +40,19 @@ BlogProvider.prototype.getPosts = function (page, callback) {
                     if (e) callback(e);
                     else collection
                         .find()
-                        .sort({created_at: -1})
-                        .limit(10)
-                        .skip((page - 1) * 10)
+                        .sort({created_at: -1}) // reverse date sort
+                        .limit(POSTS_PER_PAGE) // limit the number of posts per page
+                        .skip((page - 1) * POSTS_PER_PAGE) // skip to desired page
                         .toArray(function (error, results) {
                             if (error) callback(error);
                             else callback(null, {
-                                pages: count < 10 ? 1 : Math.ceil(count / 10),
+                                pages: count < POSTS_PER_PAGE ? 1 : Math.ceil(count / POSTS_PER_PAGE),
                                 currentPage: page,
                                 posts: results
                             });
                         });
                 });
         }
-        ;
     });
 };
 

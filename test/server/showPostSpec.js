@@ -2,26 +2,18 @@ var expect = require('expect.js');
 var request = require('supertest');
 var async = require('async')
 
-var appCtor = require('../../app.js').app;
-var start = require('../../app.js').start;
-
-var db, app, server;
+var server;
 
 describe("Get single post API", function() {
     before(function (done) {
-        var BlogProvider = require('../../data/blogProvider').BlogProvider;
-        db = new BlogProvider('localhost', 27017, 'my-blog-test', function() {
-            db.clear(function(e) {
-                app = appCtor(db);
-                server = start(app, function() {
-                    done();
-                });
-            });
+        server = require('../test-server')(function(testServer) {
+            server = testServer;
+            done();
         });
     });
 
     after(function() {
-        server.close();
+        server.stop();
     });
 
     it("should retrieve post accurately from DB", function(done) {
@@ -31,8 +23,8 @@ describe("Get single post API", function() {
             content: "Some content..."
         };
 
-        db.addPost(post, function(e, res) {
-            request(app)
+        server.db.addPost(post, function(e, res) {
+            request(server.app)
                 .get('/api/show/' + res[0]._id)
                 .end(function(e, res) {
                     expect(res.body.author).to.eql(post.author);

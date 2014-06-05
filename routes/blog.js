@@ -1,3 +1,6 @@
+/**
+ * Setting up the routes in express, basically just piping the requests to the data provider
+ */
 var express = require('express');
 var router = express.Router();
 

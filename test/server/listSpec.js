@@ -2,30 +2,22 @@ var expect = require('expect.js');
 var request = require('supertest');
 var async = require('async')
 
-var appCtor = require('../../app.js').app;
-var start = require('../../app.js').start;
-
-var db, app, server;
+var server;
 
 describe("Post listing API", function() {
     before(function (done) {
-        var BlogProvider = require('../../data/blogProvider').BlogProvider;
-        db = new BlogProvider('localhost', 27017, 'my-blog-test', function() {
-            db.clear(function(e) {
-                app = appCtor(db);
-                server = start(app, function() {
-                    done();
-                });
-            });
+        server = require('../test-server')(function(testServer) {
+            server = testServer;
+            done();
         });
     });
 
     after(function() {
-        server.close();
+        server.stop();
     });
 
     it("should respond with with empty result set at first", function(done) {
-        request(app)
+        request(server.app)
             .get('/api/list')
             .end(function(e, res) {
                 expect(res.body).to.eql({ pages: 1, currentPage: 1, posts: [] });
@@ -40,8 +32,8 @@ describe("Post listing API", function() {
             content: "Some content..."
         };
 
-        db.addPost(post, function() {
-            request(app)
+        server.db.addPost(post, function() {
+            request(server.app)
                 .get('/api/list')
                 .end(function(e, res) {
                     expect(res.body.posts.length).to.eql(1);
@@ -57,7 +49,7 @@ describe("Post listing API", function() {
 
 
     it("should reflect paging accurately", function(done) {
-        db.clear(function() {
+        server.db.clear(function() {
             var execution = [];
             var index = 0;
 
@@ -68,7 +60,7 @@ describe("Post listing API", function() {
                         title: "Title " + (++index),
                         content: "Some content..."
                     };
-                    db.addPost(post, function () {
+                    server.db.addPost(post, function () {
                         setTimeout(function() {
                             done();
                         }, 10); // no timeout causes some of the timestamps to be equal...
@@ -78,14 +70,14 @@ describe("Post listing API", function() {
 
             // add 30 posts to DB, then run the test
             async.series(execution, function () {
-                request(app)
+                request(server.app)
                     .get('/api/list')
                     .end(function (e, res) {
                         expect(res.body.posts.length).to.eql(10);
                         expect(res.body.posts[0].title).to.eql("Title 30");
                         expect(res.body.pages).to.eql(3);
                         expect(res.body.currentPage).to.eql(1);
-                        request(app)
+                        request(server.app)
                             .get('/api/list')
                             .query({page: 2})
                             .end(function (e, res) {

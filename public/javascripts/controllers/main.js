@@ -16,14 +16,14 @@ angular.module('myBlogApp')
             });
         };
 
-        getPosts(1);
+        getPosts(1); // get the first page of posts by default
 
         $scope.previousPage = function() {
-            getPosts((currentPage*1) - 1);
+            getPosts((currentPage*1) - 1); // *1 hack so that JS won't string concat
         };
 
         $scope.nextPage = function() {
-            getPosts((currentPage*1) + 1);
+            getPosts((currentPage*1) + 1); // *1 hack so that JS won't string concat
         };
 
         $scope.openPost = function(id) {
