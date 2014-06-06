@@ -1,18 +1,18 @@
 'use strict';
 
 describe('Main control', function(){
-    var $scope, controller, $httpBackend;
+    var $scope, $httpBackend, $routeParams, $controller;
 
     beforeEach(module('myBlogApp'));
 
-    beforeEach(inject(function($injector, $controller, $rootScope) {
+    beforeEach(inject(function($injector, $rootScope) {
         $httpBackend = $injector.get('$httpBackend');
+        $routeParams = $injector.get('$routeParams');
+
+        // not creating the actual controller here since some tests require path changes, and recreation on controller
+        $controller = $injector.get('$controller');
 
         $scope = $rootScope.$new();
-
-        controller = $controller('MainCtrl', {
-                '$scope': $scope
-            });
     }));
 
     afterEach(function() {
@@ -21,11 +21,18 @@ describe('Main control', function(){
     });
 
     it('should get post list form server', function() {
+        $controller('MainCtrl', {
+            '$scope': $scope
+        });
         $httpBackend.expect('GET', '/api/list?page=1').respond(200);
         $httpBackend.flush();
     });
 
     it('scope should reflect the posts returned from server', function() {
+        $routeParams.page = 1;
+        $controller('MainCtrl', {
+            '$scope': $scope
+        });
         $httpBackend.expect('GET', '/api/list?page=1')
             .respond(200, {
                 pages: 1,
@@ -49,7 +56,11 @@ describe('Main control', function(){
         expect($scope.hasNextPage).toEqual(false);
     });
 
-    it('scope should respond to paging requests correctly by incrementing/decrementing page on server requests', function() {
+    it('should respond to paging requests correctly by incrementing/decrementing page on server requests', function() {
+        $controller('MainCtrl', {
+            '$scope': $scope
+        });
+
         $httpBackend.expect('GET', '/api/list?page=1')
             .respond(200, {
                 pages: 2,
@@ -61,7 +72,11 @@ describe('Main control', function(){
         expect($scope.hasPreviousPage).toEqual(false);
         expect($scope.hasNextPage).toEqual(true);
 
-        $scope.nextPage();
+        // set page param in route, and recreate the controller to initiate the request
+        $routeParams.page = 2;
+        $controller('MainCtrl', {
+            '$scope': $scope
+        });
 
         $httpBackend.expect('GET', '/api/list?page=2')
             .respond(200, {
@@ -74,7 +89,11 @@ describe('Main control', function(){
         expect($scope.hasPreviousPage).toEqual(true);
         expect($scope.hasNextPage).toEqual(false);
 
-        $scope.previousPage();
+        // set page param in route, and recreate the controller to initiate the request
+        $routeParams.page = 1;
+        $controller('MainCtrl', {
+            '$scope': $scope
+        });
 
         $httpBackend.expect('GET', '/api/list?page=1')
             .respond(200, {

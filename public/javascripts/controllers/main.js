@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('myBlogApp')
-    .controller('MainCtrl', function ($scope, $location, BlogApi) {
-        var currentPage=1, pages=1;
+    .controller('MainCtrl', function ($scope, $location, $routeParams, BlogApi) {
+        var currentPage = $routeParams.page;
+        if (!currentPage) currentPage = 1;
+
+        var pages=1;
 
         var getPosts = function(page) {
             BlogApi.getPosts(page, function (postsData) {
@@ -16,14 +19,19 @@ angular.module('myBlogApp')
             });
         };
 
-        getPosts(1); // get the first page of posts by default
+        getPosts(currentPage); // get the first page of posts by default
 
         $scope.previousPage = function() {
-            getPosts((currentPage*1) - 1); // *1 hack so that JS won't string concat
+            var page = (currentPage*1-1); // *1 hack so that JS won't string concat
+            if (page > 1) {
+                $location.path('/p/' + page);
+            } else {
+                $location.path('/');
+            }
         };
 
         $scope.nextPage = function() {
-            getPosts((currentPage*1) + 1); // *1 hack so that JS won't string concat
+            $location.path('/p/' + (currentPage*1+1)); // *1 hack so that JS won't string concat
         };
 
         $scope.openPost = function(id) {

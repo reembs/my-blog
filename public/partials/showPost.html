@@ -1,7 +1,8 @@
 <div>
+    <a href="javascript:window.history.back()"><-back</a>
     <h2>{{post.title}}</h2>
-    <h4>By {{post.author}} at {{ post.created_at | date : 'short'}}</h4>
-    <p>
+    <h4>by {{post.author}} at {{ post.created_at | date : 'short'}}</h4>
+    <p style="white-space: pre-line">
         {{post.content}}
     </p>
 </div>

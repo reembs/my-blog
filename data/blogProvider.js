@@ -1,3 +1,4 @@
+var MongoClient = require('mongodb').MongoClient;
 var Db = require('mongodb').Db;
 var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
@@ -10,10 +11,15 @@ var POSTS_PER_PAGE = 10;
  * @constructor
  */
 BlogProvider = function (host, port, db, cb) {
-    this.db = new Db(db, new Server(host, port, {auto_reconnect: true}, {}));
-    this.db.open(cb);
-};
+    var mongoClient = new MongoClient(new Server(host, port));
 
+    var that = this;
+
+    mongoClient.open(function(err, mongoClient) {
+        that.db = mongoClient.db(db);
+        cb();
+    });
+};
 
 BlogProvider.prototype.getCollection = function (callback) {
     this.db.collection('posts', function (error, post_collection) {

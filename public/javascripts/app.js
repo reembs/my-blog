@@ -9,6 +9,10 @@ angular.module('myBlogApp', [
                 templateUrl: '/partials/main.html',
                 controller: 'MainCtrl'
             })
+            .when('/p/:page', {
+                templateUrl: '/partials/main.html',
+                controller: 'MainCtrl'
+            })
             .when('/add', {
                 templateUrl: '/partials/addPost.html',
                 controller: 'AddPostCtrl'
